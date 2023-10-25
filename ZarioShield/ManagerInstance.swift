@@ -29,4 +29,16 @@ class ManagerInstance {
         store.shield.applicationCategories = ShieldSettings.ActivityCategoryPolicy.specific(selectionToDiscourage.categoryTokens, except: Set())
         store.shield.webDomains = selectionToDiscourage.webDomainTokens
     }
+    
+    func fetchShieldedApplicationsName() -> [String] {
+        var applicationsName = [String]()
+        if let applications = store.application.blockedApplications {
+            for app in applications {
+                if let appName = app.localizedDisplayName {
+                    applicationsName.append(appName)
+                }
+            }
+        }
+        return applicationsName
+    }
 }

@@ -6,14 +6,40 @@
 //
 
 import UIKit
+import CoreData
+import FamilyControls
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        AuthorizationCenter.shared.requestAuthorization { result in
+            switch result {
+            case .success:
+                print("Success")
+            case .failure(let error):
+                print("error for screentime is \(error)")
+            }
+        }
+        
+        _ = AuthorizationCenter.shared.$authorizationStatus
+            .sink() {_ in
+                switch AuthorizationCenter.shared.authorizationStatus {
+                case .notDetermined:
+                    print("not determined")
+                case .denied:
+                    print("denied")
+                case .approved:
+                    print("approved")
+                    
+                @unknown default:
+                    break
+                }
+            }
+
+        
         return true
     }
 
